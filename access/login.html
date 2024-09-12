@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../scripts/indigitall.js"></script>
+    <script src="../scripts/navigation.js"></script>
+    <title>Login</title>
+</head>
+ 
+<body>
+    <div>
+        <button onclick="onGoToRegister()">Signup</button>
+        <button onclick="onGoToLogin()">Login</button>
+    </div>
+
+    <div>
+        <h1>
+            LOGIN
+        </h1>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <textarea id="email" name="email"></textarea>
+    </div>
+    <div>
+        <label for="pwd">Password:</label>
+        <textarea id="pwd" name="pwd"></textarea>
+    </div>
+    <div>
+        <button onclick="onSubmit()">Submit</button>
+    </div>
+
+    <script>
+        async function onGoToRegister() {
+            const topicCodes = ["incomplete_step1", "incomplete_step2", "incomplete_step3"];
+            await subscribeToTopics(topicCodes);
+
+            goToRegister("/access/login.html");
+        }
+
+        function onGoToLogin() {
+            goToLogin("/access/login.html");
+        }
+
+        async function onSubmit() {
+            checkCredentials();
+
+            let email = document.getElementById("email").value;
+            await logIn(email);  
+
+            goToMain("/access/login.html");
+        }
+
+        function checkCredentials() {
+            let email = document.getElementById("email").value;
+            let pwd = document.getElementById("pwd").value;
+            /* Check here correctness of email and password or return an error otherwise */  
+        }
+    </script>
+
+    <script
+        src="../sdk.min.js"
+        onload="indigitall.init({
+            appKey: '94cb9c3e-0749-450f-8445-49bf2b269d8a',
+            workerPath: '/worker.min.js',
+            requestLocation: true
+        })"
+        async>
+    </script>
+</body>
+ 
+</html>

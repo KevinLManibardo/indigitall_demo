@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="../scripts/indigitall.js"></script>
+    <script src="../scripts/navigation.js"></script>
+    <title>Signup</title>
+</head>
+ 
+<body>
+    <div>
+        <button onclick="onGoToRegister()">Signup</button>
+        <button onclick="onGoToLogin()">Login</button>
+    </div>
+
+    <div>
+        <h1>
+            SIGNUP
+        </h1>
+    </div>
+
+    <div id="nameDiv">
+        <div>
+            <label for="name">Name:</label>
+            <textarea id="name" name="name"></textarea>
+        </div>
+        <div>
+            <label for="birthdate">Birth Date:</label>
+            <textarea id="birthdate" name="birthdate"></textarea>
+        </div>
+        <div>
+            <button onclick="onNameSubmit()">Submit name and birthdate</button>
+        </div>
+    </div>
+
+    <div id="emailDiv" style="display:none">
+        <div>
+            <label for="email">Email:</label>
+            <textarea id="email" name="email"></textarea>
+        </div>
+        <div>
+            <label for="email-rep">Repeat Email:</label>
+            <textarea id="email-rep" name="email-rep"></textarea>
+        </div>
+        <div>
+            <button onclick="onEmailSubmit()">Submit email</button>
+        </div>
+    </div>
+
+    <div id="pwdDiv" style="display:none">
+        <div>
+            <label for="pwd">Password:</label>
+            <textarea id="pwd" name="pwd"></textarea>
+        </div>
+        <div>
+            <label for="pwd-rep">Repeat Password:</label>
+            <textarea id="pwd-rep" name="pwd-rep"></textarea>
+        </div>
+        <div>
+            <button onclick="onPasswordSubmit()">Submit password</button>
+        </div>
+    </div>
+
+
+    <script>
+        async function onNameSubmit() {
+            checkNameAndBirthdate()
+
+            const unsubscribeTopicCodes = ["incomplete_step1"];
+            await unsubscribeFromTopics(unsubscribeTopicCodes);
+            await sendCustomEvent("step2")   
+
+            toggleBlockVisibility("nameDiv", "emailDiv")
+        }
+
+        function checkNameAndBirthdate() {
+            const name = document.getElementById("name").value;
+            const birthdate = document.getElementById("birthdate").value;
+            /* Check here correctness of name and birthdate or return an error otherwise */           
+        }
+
+        async function onEmailSubmit() {
+            checkEmail(); 
+
+            const unsubscribeTopicCodes = ["incomplete_step2"];
+            await unsubscribeFromTopics(unsubscribeTopicCodes);
+            await sendCustomEvent("step2");       
+
+            toggleBlockVisibility("emailDiv", "pwdDiv")
+        }
+
+        function checkEmail() {
+            let email = document.getElementById("email").value;
+            let emailRep = document.getElementById("email-rep").value;
+            /* Check here correctness of email or return an error otherwise */              
+        }
+
+        async function onPasswordSubmit() {
+            checkPassword();
+
+            const unsubscribeTopicCodes = ["incomplete_step3"];
+            await unsubscribeFromTopics(unsubscribeTopicCodes);
+            await sendCustomEvent("newUser"); 
+            let email = document.getElementById("email").value;
+            await logIn(email);         
+
+            goToMain("/access/register.html");
+        }
+
+        function checkPassword() {
+            let pwd = document.getElementById("pwd").value;
+            let pwdRep = document.getElementById("pwd-rep").value;
+            /* Check here correctness of password or return an error otherwise*/  
+        }  
+        
+        async function onGoToRegister() {
+            const topicCodes = ["incomplete_step1", "incomplete_step2", "incomplete_step3"];
+            await subscribeToTopics(topicCodes);
+
+            goToRegister("/access/register.html");
+        }
+
+        function onGoToLogin() {
+            goToLogin("/access/register.html");
+        }
+
+        function toggleBlockVisibility(blockToHideId, blockToShowId) {
+            const blockToHide = document.getElementById(blockToHideId);
+            blockToHide.style.display = "none";
+            const blockToShow = document.getElementById(blockToShowId);
+            blockToShow.style.display = "block";
+        }
+    </script>
+
+<script
+    src="../sdk.min.js"
+    onload="indigitall.init({
+        appKey: '94cb9c3e-0749-450f-8445-49bf2b269d8a',
+        workerPath: '/worker.min.js',
+        requestLocation: true
+    })"
+    async>
+    
+</script>
+</body>
+ 
+</html>
